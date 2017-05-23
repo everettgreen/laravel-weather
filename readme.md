@@ -22,10 +22,12 @@ Exercise:
 - If you're running Mac or Linux, you should be able to run `./quickstart.sh`
     to perform the following steps automatically. Your mileage may vary on Windows.
     You'll still need to enter your own API key.
-- After cloning this repository, navigate to the project root and run `composer install`
-- Copy `./.env.example` to `./.env` and update the OpenWeatherMap API key
-- Create empty file `./database/database.sqlite`
-- Then, run `php artisan migrate` to install schema
+- After cloning this repository:
+    - Copy `./.env.example` to `./.env` and update the OpenWeatherMap API key
+    - Navigate to the project root and run `composer install`
+    - Run `php artisan key:generate`
+    - Create empty file `./database/database.sqlite`
+    - Then, run `php artisan migrate` to install schema
 
 # Notes
 - I have used Laravel Framework 5.4 for this exercise.
