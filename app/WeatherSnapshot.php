@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class WeatherSnapshot extends Model
 {
 
+    protected $fillable = ['postcode'];
+
     public function request() {
         $weatherService = new WeatherService();
         $this->response = $weatherService->requestByPostcode($this->postcode);
