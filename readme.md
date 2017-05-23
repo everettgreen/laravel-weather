@@ -1,4 +1,4 @@
-# minPHP Weather App #
+# Laravel Queued Weather Tracking App #
 
 Exercise:
 
