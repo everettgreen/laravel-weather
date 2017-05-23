@@ -2,44 +2,15 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;;
+use Illuminate\Database\Eloquent\Model;
 
 class WeatherSnapshot extends Model
 {
 
-    protected $apiEndpoint = 'http://api.openweathermap.org/data/2.5/';
-
-    public function loadByPostcode($postcode) {
-        $this->postcode = $postcode;
-        $this->country_code = 'US';
-        $this->loadSnapshot();
-    }
-
-    public function loadSnapshot() {
-        $this->loadApiResponse();
+    public function request() {
+        $weatherService = new WeatherService();
+        $this->response = $weatherService->requestByPostcode($this->postcode);
         $this->hydrateFromResponse();
-        $this->save();
-    }
-
-    protected function loadApiResponse() {
-        $client = new \GuzzleHttp\Client(['base_uri' => $this->apiEndpoint]);
-        $result = $client->get('weather', ['query' => $this->getQueryParams()]);
-        if (!$this->resultIsValid($result)) {
-            throw new Exception('Invalid response from OpenWeatherMap');
-        }
-        $this->response = $result->getBody()->getContents();
-    }
-
-    protected function getQueryParams() {
-        return [
-            'units' => 'imperial',
-            'zip' => $this->postcode . ',' . $this->country_code,
-            'appid' => config('services.openweathermap.key')
-        ];
-    }
-
-    protected function resultIsValid($result) {
-        return $result->getStatusCode() == 200;
     }
 
     protected function hydrateFromResponse() {

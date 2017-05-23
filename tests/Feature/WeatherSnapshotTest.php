@@ -22,7 +22,8 @@ class WeatherSnapshotTest extends TestCase
     public function a_user_can_request_knoxville_weather() {
         //This functional test is hitting the API endpoint. Unit test would implement mocks to avoid.
         $snapshot = new WeatherSnapshot();
-        $snapshot->loadByPostcode('37917');
+        $snapshot->postcode = '37917';
+        $snapshot->request();
         self::assertEquals('Knoxville', $snapshot->location);
     }
 
