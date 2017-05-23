@@ -15,17 +15,17 @@ class CreateWeatherSnapshotsTable extends Migration
     {
         Schema::create('weather_snapshots', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('country_code', 2);
+            $table->string('country_code', 2)->nullable();
             $table->string('postcode', 10);
-            $table->string('location');
-            $table->string('conditions_group');
-            $table->string('conditions_details');
-            $table->float('temperature');
-            $table->float('pressure');
-            $table->float('humidity');
-            $table->float('wind_speed');
-            $table->float('wind_direction');
-            $table->text('response');
+            $table->string('location')->nullable();
+            $table->string('conditions_group')->nullable();
+            $table->string('conditions_details')->nullable();
+            $table->float('temperature')->nullable();
+            $table->float('pressure')->nullable();
+            $table->float('humidity')->nullable();
+            $table->float('wind_speed')->nullable();
+            $table->float('wind_direction')->nullable();
+            $table->text('response')->nullable();
             $table->timestamps();
         });
     }

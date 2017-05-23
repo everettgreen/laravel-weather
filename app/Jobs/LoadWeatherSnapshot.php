@@ -15,12 +15,15 @@ class LoadWeatherSnapshot implements ShouldQueue
 
     protected $weatherSnapshot;
 
+    public $tries = 3;
+
     /**
      * Create a new job instance.
      *
+     * @param WeatherSnapshot $snapshot
      * @return void
      */
-    public function __construct(WeatherSnapshot $snapshot)
+    public function __construct($snapshot)
     {
         $this->weatherSnapshot = $snapshot;
     }
@@ -34,5 +37,10 @@ class LoadWeatherSnapshot implements ShouldQueue
     {
         $this->weatherSnapshot->request();
         $this->weatherSnapshot->save();
+    }
+
+    public function fail($exception = null)
+    {
+        //could notify via email
     }
 }

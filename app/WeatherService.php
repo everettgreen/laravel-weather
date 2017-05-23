@@ -1,10 +1,6 @@
 <?php
 
-
 namespace app;
-
-
-use GuzzleHttp\Exception\RequestException;
 
 class WeatherService
 {

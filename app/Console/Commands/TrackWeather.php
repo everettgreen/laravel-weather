@@ -41,17 +41,34 @@ class TrackWeather extends Command
     public function handle()
     {
         $trackedPostcodes = config('weather.tracked');
-        $currentTime = Carbon::now();
         foreach ($trackedPostcodes as $postcode => $frequencyInMinutes) {
-            $lastCreatedAt = \App\WeatherSnapshot::query()
-                ->where('postcode', $postcode)
-                ->orderByDesc('created_at')
-                ->value('created_at');
-            if ($currentTime->diffInMinutes($lastCreatedAt) >= $frequencyInMinutes) {
-                $snapshot = new WeatherSnapshot(['postcode' => $postcode]);
-                dispatch(new LoadWeatherSnapshot($snapshot));
+            if ($this->postcodeRequiresNewSnapshot($postcode, $frequencyInMinutes)) {
+                $this->queueNewSnapshot($postcode);
             }
         }
         return true;
+    }
+
+    protected function postcodeRequiresNewSnapshot($postcode, $frequencyInMinutes) {
+
+        $snapshot = WeatherSnapshot::query()
+            ->where('postcode', $postcode)
+            ->orderByDesc('created_at')
+            ->first(['created_at']);
+
+        if (!$snapshot) {
+            return true;
+        }
+
+        $minutesSinceLastSnapshot = Carbon::now()->diffInMinutes($snapshot->created_at);
+
+        return $minutesSinceLastSnapshot >= $frequencyInMinutes;
+
+    }
+
+    protected function queueNewSnapshot($postcode) {
+        $snapshot = new WeatherSnapshot(['postcode' => $postcode]);
+        $snapshot->save();
+        dispatch(new LoadWeatherSnapshot($snapshot));
     }
 }
