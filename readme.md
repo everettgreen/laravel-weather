@@ -17,6 +17,16 @@ Exercise:
 - The set of zip codes and their respective retrieval frequency should be contained in configuration file
 - Use the OpenWeatherMap API for data retrieval (https://openweathermap.org)
 
+# Installation
+- This repository depends on composer and was tested successfully with PHP7.1
+- If you're running Mac or Linux, you should be able to run `./quickstart.sh`
+    to perform the following steps automatically. Your mileage may vary on Windows.
+    You'll still need to enter your own API key.
+- After cloning this repository, navigate to the project root and run `composer install`
+- Copy `./.env.example` to `./.env` and update the OpenWeatherMap API key
+- Create empty file `./database/database.sqlite`
+- Then, run `php artisan migrate` to install schema
+
 # Notes
 - I have used Laravel Framework 5.4 for this exercise.
 - I have attempted to follow a TDD process for the first time, but only
@@ -37,6 +47,8 @@ Exercise:
     for a zip more frequently than it updates/is valuable.
 - Exceptions are handled via queue. Stub for failure logic created,
     could be used to notify of failure, handle retry, delete orphan, etc.
+- Postcode at the least should be an indexed column, since we're doing a lookup
+    on it.
 
 # Features
 - Service to request weather data for zip
